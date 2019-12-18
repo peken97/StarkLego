@@ -1,0 +1,5 @@
+gym==0.15.4
+~umpy==1.16.5
+pyldraw==dev
+ldraw==0.11
+numpy==1.17.4
