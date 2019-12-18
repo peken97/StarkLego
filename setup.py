@@ -7,8 +7,8 @@ setup(
     description = 'Library used to create lego builds',   # Give a short description about your library
     author = 'Petar Kenic',                   # Type in your name
     author_email = 'kenicpetar@yahoo.com',      # Type in your E-Mail
-     url = 'https://github.com/peken97/StarkLego',   # Provide either the link to your github or to your website
-    download_url = 'https://github.com/peken97/StarkLego/archive/v0.2.tar.gz',    # I explain this later on
+    url = 'https://github.com/peken97/StarkLego',   # Provide either the link to your github or to your website
+    download_url = 'https://github.com/peken97/StarkLego/archive/v0.1.1.tar.gz',    # I explain this later on
     keywords = ['LEGO', 'BUILD', 'LDRAW'],   # Keywords that define your package best
     install_requires=[            # I get to this in a second
             'gym',
