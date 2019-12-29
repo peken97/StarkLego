@@ -1,8 +1,8 @@
 import gym
 from gym import spaces as _spaces
 import numpy as _np
-from ..lego_builders.builder import TwoXTwoBlock as _TwoXTwoBlock
-from ..lego_builders.builder import LegoWorld as _LegoWorld
+from StarkLego.lego_builders.model.blocks import TwoXTwoBlock
+from StarkLego.lego_builders.service.builder import LegoWorld
 
 from ldraw.pieces import Group, Piece
 
@@ -16,8 +16,8 @@ class LegoEnv(gym.Env):
 		
 		self.current_step = 0
 		self.reward = noLegoPieces
-		self.world = _LegoWorld(x, y, z)
-		self.noLegoPieces = noLegoPieces
+		self.world = LegoWorld(x, y, z)
+		self.number_of_lego_pieces = noLegoPieces
 		self.consecutiveWrongChoices = 0
 		self.steps_taken = 0
 		self.previous_global_maximum = 0
@@ -26,12 +26,11 @@ class LegoEnv(gym.Env):
 		
 		action_x = action[0]
 		action_z = action[1]
-		#print("Taking action: " + action_x.__repr__() + action_z.__repr__())
 		
-		legoBlock = _TwoXTwoBlock()
+		legoBlock = TwoXTwoBlock()
 	
-		self.world.addPartToWorld(legoBlock, action_x, action_z)
-		return self.world.yGlobalMax
+		self.world.add_part_to_world(legoBlock, action_x, action_z)
+		return self.world.y_global_max
 		
 
 	def _next_observation(self):
@@ -44,8 +43,6 @@ class LegoEnv(gym.Env):
 		
 		try:
 			global_maximum = self._take_action(action)
-			
-			print(self.previous_global_maximum, global_maximum)
 			if self.previous_global_maximum >= global_maximum:
 				reward = 10
 			else:
@@ -56,7 +53,7 @@ class LegoEnv(gym.Env):
 
 		self.steps_taken += 1
 		
-		if self.steps_taken >= self.noLegoPieces:
+		if self.steps_taken >= self.number_of_lego_pieces:
 			done = True
 		obs = self._next_observation()
 		return obs, reward, done, {}
@@ -66,12 +63,10 @@ class LegoEnv(gym.Env):
 		self.world.reset()
 		self.current_step = 0
 		self.steps_taken = 0
-		#print(self.world.ldrContent)
 		self.previous_global_maximum = 0
 
 		return self.world.content
 
 	def render(self, mode='human', close=False):
-		# Render the environment to the screen
-		print(self.world.ldrContent)
+		print(self.world.ldraw_content)
 		
