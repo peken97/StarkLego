@@ -1,5 +1,4 @@
 dist/*
 test*
-StarkLego.egg-info
 **/__pycache__
 .vscode
