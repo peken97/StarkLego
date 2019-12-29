@@ -4,12 +4,8 @@ from ldraw.figure import *
 from ldraw.geometry import Identity
 from ldraw.library.colours import *
 import numpy as np
+from StarkLego.lego_builders.model import StarkDimensions
 
-class Dimensions():
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
 
 class LegoDimensions():
     def __init__(self, x, y, z):
@@ -20,21 +16,11 @@ class LegoDimensions():
     def convertToLdrDimensions(self):
         return self.x * 20, self.y * -8, self.z * 20
 
-class BaseBlock():
-    def __init__(self, x=5, y=5, z=10):
-        self.group = Group()
-        self.ldrContent = ""
-        self.maxLdrDimensions = Dimensions(200, 120, 280)
-        self.maxLegoDimensions = Dimensions(200, 120, 280)
-
-    def append(self, newLine):
-        self.ldrContent += newLine + "\n"
-
 class LegoWorld():
     def __init__(self, x=4, y=3, z=4):
         self.group = Group()
         self.ldrContent = ""
-        self.maxLegoDimensions= LegoDimensions(x, y, z)
+        self.maxLegoDimensions= StarkDimensions(x, y, z)
         self.content = np.zeros([x,y,z])
         self.noOfPieces = 0
         self.yMap = np.zeros([x,z])
@@ -87,12 +73,10 @@ class LegoWorld():
 
 class TwoXTwoBlock():
     def __init__(self):
-        self.sizeDimensions = LegoDimensions(x=2, y=3, z=2)
+        self.sizeDimensions = StarkDimensions(x=2, y=3, z=2)
 
-    def create(self, x, y, z, group):
-        
-        positionDimensions = LegoDimensions(x=x, y=y, z=z)
-        convertedX, convertedY, convertedZ = positionDimensions.convertToLdrDimensions()
-        print("adding part: ", convertedX, convertedY, convertedZ)
+    def create(self, x, y, z, group=Group()):
+        positionDimensions = StarkDimensions(x=x, y=y, z=z)
+        convertedX, convertedY, convertedZ = positionDimensions.convertToLdrDimensions(x,y,z)
         return Piece(Dark_Blue, Vector(x=convertedX, y=convertedY, z=convertedZ), Identity(), Brick2X2, group).__repr__()
 

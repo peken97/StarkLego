@@ -20,12 +20,13 @@ class LegoEnv(gym.Env):
 		self.noLegoPieces = noLegoPieces
 		self.consecutiveWrongChoices = 0
 		self.steps_taken = 0
+		self.previous_global_maximum = 0
 
 	def _take_action(self, action):
 		
 		action_x = action[0]
 		action_z = action[1]
-		print("Taking action: " + action_x.__repr__() + action_z.__repr__())
+		#print("Taking action: " + action_x.__repr__() + action_z.__repr__())
 		
 		legoBlock = _TwoXTwoBlock()
 	
@@ -40,8 +41,16 @@ class LegoEnv(gym.Env):
 	def step(self, action):
 		done=False
 		reward = 0
+		
 		try:
-			reward = self.world.maxLegoDimensions.y - self._take_action(action)
+			global_maximum = self._take_action(action)
+			
+			print(self.previous_global_maximum, global_maximum)
+			if self.previous_global_maximum >= global_maximum:
+				reward = 10
+			else:
+				self.previous_global_maximum = global_maximum
+				reward = -100
 		except:
 			reward = -10000
 
@@ -58,6 +67,7 @@ class LegoEnv(gym.Env):
 		self.current_step = 0
 		self.steps_taken = 0
 		#print(self.world.ldrContent)
+		self.previous_global_maximum = 0
 
 		return self.world.content
 
