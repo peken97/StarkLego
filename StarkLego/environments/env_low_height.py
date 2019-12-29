@@ -56,7 +56,7 @@ class LegoEnv(gym.Env):
 		if self.steps_taken >= self.number_of_lego_pieces:
 			done = True
 		obs = self._next_observation()
-		return obs, reward, done, {}
+		return obs, reward, done, {"ldrContent": self.world.ldraw_content}
 
 	def reset(self):
 		self.reward = 0
