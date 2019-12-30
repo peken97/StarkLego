@@ -63,12 +63,10 @@ from stable_baselines import PPO2
 import numpy as np
 
 
-env = DummyVecEnv([lambda: LegoEnv(x=6, y=14, z=6, noLegoPieces=4)])
+env = DummyVecEnv([lambda: LegoEnv(4, 14, 4, 4)])
 
-model = PPO2(MlpPolicy, env, verbose=1)
-obs = env.reset()
-model.set_env(env)
-model.learn(total_timesteps=20000)
+model = PPO2(MlpPolicy, env, verbose=1, learning_rate=0.0001, gamma=1)
+model.learn(total_timesteps=3)
 obs = env.reset()
 
 print("Done training")
