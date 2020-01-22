@@ -2,3 +2,4 @@ dist/*
 test*
 **/__pycache__
 .vscode
+ldraw-license.txt
