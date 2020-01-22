@@ -23,7 +23,7 @@ class LegoWorld():
         self.content = np.zeros([self.world_dimensions.x,self.world_dimensions.y,self.world_dimensions.z])
         self.ldraw_content = ""
         self.number_of_pieces_placed = 0
-        self.yMy_offset_referenceap = np.zeros([self.world_dimensions.x, self.world_dimensions.z])
+        self.y_offset_reference = np.zeros([self.world_dimensions.x, self.world_dimensions.z])
         self.y_global_max = 0
         
     def find_maximum_y_value_in_world(self, part, x, y, z):
