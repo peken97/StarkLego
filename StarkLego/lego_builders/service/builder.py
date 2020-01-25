@@ -10,7 +10,7 @@ from StarkLego.lego_builders.model.blocks import TwoXTwoBlock
 
 
 class LegoWorld():
-    def __init__(self, x=4, y=3, z=4):
+    def __init__(self, x, y, z):
         self.group = Group()
         self.ldraw_content = ""
         self.world_dimensions= StarkDimensions(x, y, z)

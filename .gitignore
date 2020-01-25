@@ -3,3 +3,4 @@ test*
 **/__pycache__
 .vscode
 ldraw-license.txt
+./StarkLego.egg-info/*
