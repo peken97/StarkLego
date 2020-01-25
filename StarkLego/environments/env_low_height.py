@@ -90,7 +90,6 @@ class LegoEnv(gym.Env):
 		self.previous_global_maximum = 0
 		self.cumulative_reward = 0
 
-
 		return self.world.content
 
 	def render(self, mode='human', close=False):
@@ -98,4 +97,7 @@ class LegoEnv(gym.Env):
 
 	def plot_results(self):
 		self.episode_number_vs_performance.plot()
+	def save_results_to_csv(self, file_name, condensed=True):
+		if condensed:
+			self.episode_number_vs_performance.generate_csv(file_name)
 		

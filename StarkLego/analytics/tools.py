@@ -11,7 +11,7 @@ class AgentPerformanceTracker():
     def append(self, x, y):
         self.data.append(x, y)
 
-    def generate_data(self):
+    def generate_data_condensed(self):
         length = self.data.length
         spacing = ceil(length/self.size_of_data_group_to_be_averaged)
         x = []
@@ -30,17 +30,25 @@ class AgentPerformanceTracker():
 
         return x, y
 
-    def generate_csv(self, file_name):
-        x, y = generate_data(self)
-        f = open(file_name, "a")
-        for index in self.data.length:
-            lineToAppend = "{},{}\n".format(x[i], y[i])
-            f.write(lineToAppend)
+    def generate_csv(self, file_name, condensed=True):
+
+        x = None
+        y = None
+        if condensed:
+            x, y = self.generate_data_condensed()
+        else:
+            x = self.data.x
+            y = self.data.y
+
+        f = open(file_name, "w")
+        file_data = "Episode #, Reward\n"
+        for index in range(x.__len__()):
+            file_data += "{},{}\n".format(x[index], y[index])
+        f.write(file_data)
         f.close()
-        #create a file that will store the data as a csv
 
     def plot(self):
-        x, y = self.generate_data()
+        x, y = self.generate_data_condensed()
 
         self.plotter.plot(x, y, 'Episode #', 'Average Cumulative Reward', 'Performance of Agent')
 
