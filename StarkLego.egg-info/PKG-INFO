@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: StarkLego
-Version: 0.1.6
+Version: 0.1.7
 Summary: Library used to create lego builds
 Home-page: https://github.com/peken97/StarkLego
 Author: Petar Kenic
@@ -28,9 +28,14 @@ Description: # StarkLego
         
         __IMPORTANT:__ Create a `ldraw-license.txt` file in the directory wherever you are running your code from. This is necessary because in order to use the ldraw libraries you will need to include this.
         
+        ## Lego Piece Support
+        So far, only the following Lego Pieces are supported:
+        - 2X2 Brick
+        Due to the lack of support for more than the *2X2 Brick*, there is no customization available.
+        
         ## Constructing Your Own LDR Files
         You might want to use this library to construct your own LDR files which contain different parts. 
-        The following is an example of how to use the *StarkLego* package to create a Lego world.
+        The following is an example of how to use the *StarkLego* package to create a Lego World.
         
         ```python
         from StarkLego.lego_builders.service.builder import LegoWorld
@@ -49,8 +54,12 @@ Description: # StarkLego
         #1 272 40.000000 -24.000000 40.000000 1.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 1.000000 3003.DAT
         
         ```
-        ## Gym.Spaces Environments
-        These environments cater to the agents available in the `stable_baselines` RL library. These environments were an important part of the pilot of the project. 
+        ## Using Environments For Training Agents
+        
+        These environments cater to the agents available in the `stable_baselines` RL library. 
+        You can get `stable_baselines` by running the following in your command-line: <br/>
+        `pip install stable-baselines==2.9.0`
+        
         ### How to run
         If you wish to run one of these environments, please feel free using the code below:
         
@@ -62,20 +71,20 @@ Description: # StarkLego
         import numpy as np
         
         
-        env = DummyVecEnv([lambda: LegoEnv(6, 14, 6, 12)])
+        env = DummyVecEnv([lambda: LegoEnv(4, 14, 4, 4)])
         
-        model = PPO2(MlpPolicy, env, verbose=1)
-        obs = env.reset()
-        model.set_env(env)
-        model.learn(total_timesteps=75000)
+        model = PPO2(MlpPolicy, env, verbose=1, learning_rate=0.0001, gamma=1)
+        model.learn(total_timesteps=3)
         obs = env.reset()
         
         print("Done training")
         
         for i in range(4):
-            action, _states = model.predict(obs)
+            action, _states = model.predict(obs, deterministic=True)   #determinstic is `False` by default
             obs, rewards, done, info = env.step(action)
             env.render()
+            if done:
+                print(info[0].get("ldrContent"))   #print the state through `info` due to environment resetting
         
         ```
         ### List of Supported Environments
@@ -89,12 +98,15 @@ Description: # StarkLego
         
         
         The only specifications than can be made are the dimensions of the LEGO World, and the number of pieces per build iteration.
-        #### Constructor:`LegoEnv(maximum_dimension_x, maximum_dimension_y, maximum_dimension_z, number_of_lego_pieces)`
+        #### Constructor:`LegoEnv(x, y, z, noLegoPieces)`
+        - x: the maximum `x` dimenstion of the Lego World
+        - y: the maximum `y` dimenstion of the Lego World
+        - z: the maximum `z` dimenstion of the Lego World
+        - noLegoPieces: The number of Lego pieces to be inserted into the Lego World
         
         This environment does not allow any customization for which
         lego pieces can be used. 
-        #### Lego Pieces Supported:
-        - 2X2 Brick
+        
         
         
 Keywords: LEGO,BUILD,LDRAW
