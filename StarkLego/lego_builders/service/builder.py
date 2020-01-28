@@ -36,8 +36,8 @@ class LegoWorld():
                     y_offset = int(self.y_offset_reference[x + i,z + j])
                     y_local_max= int(self.y_offset_reference[x + i,z + j])
                     restart = False
-                    for k in range(part.dimensions.y+1):
-                        if self.content[ x + i, y_offset + k, z + j] == 1:
+                    for k in range(part.dimensions.y):
+                        if self.content[x + i, y_offset + k, z + j] == 1:
                             if y_local_max <= y_offset+k:    
                                 y_local_max += 1
                                 self.y_offset_reference[x + i, z + j] = y_local_max
